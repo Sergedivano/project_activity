@@ -1,0 +1,5 @@
+C:/labs/Project_activity/sfml1.3/CMakeFiles/edit_cache.dir
+C:/labs/Project_activity/sfml1.3/CMakeFiles/rebuild_cache.dir
+C:/labs/Project_activity/sfml1.3/01/CMakeFiles/01.dir
+C:/labs/Project_activity/sfml1.3/01/CMakeFiles/edit_cache.dir
+C:/labs/Project_activity/sfml1.3/01/CMakeFiles/rebuild_cache.dir
