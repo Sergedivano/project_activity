@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <time.h>
-#include <SFML/Audio.hpp>
+
+using namespace sf;
 
 const int SIZE = 4;						// Размер игрового поля в плашках
 const int ARRAY_SIZE = SIZE * SIZE;		// Размер массива
@@ -15,19 +15,19 @@ enum class Direction {
     Down
 };
 
-class Game : public sf::Drawable, public sf::Transformable
+class Game : public Drawable, public sf::Transformable
 {
 protected:
 	int elements[ARRAY_SIZE];
 	int empty_index;
 	bool solved;
-    sf::Font font;
-    sf::Image background;
+    Font font;
+    Image background;
 public:
 	Game();
 	void Init();
 	bool Check();
 	void Move(Direction direction);
 public:
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void draw(RenderTarget& target, RenderStates states) const;
 };

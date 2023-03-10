@@ -2,6 +2,7 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <iostream>
+#include <time.h>
 #include "Game.h"
 #include "Game.cpp"
 
@@ -10,7 +11,7 @@ using namespace sf;
 class Button {
 public:
     Texture s, e, m;
-    Sprite start, exit, menu;
+    Sprite start, exit, menu, prod, naczap;
 
     Button() {
         s.loadFromFile("C:/labs/Project_activity/sfml3/project_activity/start.png");
@@ -28,13 +29,20 @@ public:
         menu.setTexture(m);
         menu.setPosition(585, 150);
         menu.setTextureRect(IntRect(0, 0, 196, 300));
+
+        prod.setTexture(s);
+        prod.setPosition(585, 150);
+        prod.setTextureRect(IntRect(0, 0, 196, 65));
+
+        naczap.setTexture(s);
+        naczap.setPosition(585, 300);
+        naczap.setTextureRect(IntRect(0, 65, 196, 65));
     }
 };
 
 class Boolean {
 public:
-    bool stop = true, play = false, pusk = false, pause = false;
-    int puskgame = 1000;
+    bool stop = true, play = false, pause = false;
 };
 
 Boolean boolean;
@@ -49,8 +57,8 @@ class Stopwatch {
                 min[i].setTexture(image);
                 sec[i].setTexture(image);
     
-                min[i].setPosition(570 + 30 * i, 25);
-                sec[i].setPosition(654 + 30 * i, 25);
+                min[i].setPosition(600 + 30 * i, 25);
+                sec[i].setPosition(680 + 30 * i, 25);
     
                 min[i].setTextureRect(IntRect(0, 0, 24, 38));
                 sec[i].setTextureRect(IntRect(0, 0, 24, 38));
@@ -60,7 +68,7 @@ class Stopwatch {
             }
     
             toc.setTexture(image);
-            toc.setPosition(627, 25);
+            toc.setPosition(585, 100);
             toc.setTextureRect(IntRect(240, 0, 24, 38));
     
             ms = 0;
@@ -96,6 +104,11 @@ class Stopwatch {
             }
         }
     };
+
+class Gaming {
+public:
+    int x = 0, y = 0; 
+};
 
 int main()
 {
@@ -140,7 +153,7 @@ int main()
 		while (window.pollEvent(event))
 		{
             if (event.type == Event::Closed) window.close();
-            Button button;
+            
 			if (event.type == Event::KeyPressed)
 			{
 				// Получаем нажатую клавишу - выполняем соответствующее действие
@@ -152,24 +165,75 @@ int main()
 				// Новая игра
 				if (event.key.code == Keyboard::F2)
 				{
-                    
                     game.Init();
 					move_counter = 100;
                 }
-                Button button;
+            
+            if (event.type == Event::MouseButtonPressed)
+                if (event.mouseButton.button == Mouse::Left) 
+                {
+                    Vector2i pos = Mouse::getPosition(window);
+
+                    if (boolean.play) {
+                        if (pos.x <= 512) 
+                        {
+                            //gaming.x = pos.x
+                            //gaming.y = pos.y
+                        }
+                    else if (button.start.getGlobalBounds().contains(pos.x, pos.y)) 
+                    {
+                            boolean.pause = true;
+                            boolean.play = false;
+                    }
+                    else if (boolean.stop) 
+                    {
+                        if (button.start.getGlobalBounds().contains(pos.x, pos.y)) 
+                        {
+                            boolean.stop = false;
+
+                            window.setFramerateLimit(0);
+
+                            for (int i = 0; i < 2; i++) 
+                            {
+                                watch.m[i] = 0;
+                                watch.s[i] = 0;
+                            }
+                            watch.ms = 0;  
+
+                            button.start.setTextureRect(IntRect(0, 65, 196, 65));  
+                        }    
+                    }
+                }    
 			}
-		}
+        }
+    }
 
 		// Если счетчик ходов больше нуля, продолжаем перемешивать головоломку
 		if (move_counter-- > 0) game.Move((Direction)(rand() % 4));
 
 		// Выполняем необходимые действия по отрисовке
-		window.clear();
-		window.draw(game);
+        //gaming.update();
+        window.clear();
+        watch.update();
+        window.draw(game);
+            if (boolean.stop || boolean.play)
+        window.draw(button.start);
+            for (int i = 0; i < 2; i++) 
+            {
+                window.draw(watch.min[i]);
+                window.draw(watch.sec[i]);
+            }
+        window.draw(watch.toc);
+            if (boolean.pause) 
+            {
+                window.draw(button.prod);
+                window.draw(button.naczap);
+            }
         window.draw(text);
         window.draw(button.exit);
         window.draw(button.menu);
         window.draw(button.start);
+        window.draw(watch.toc);
         window.display();
 	}
 

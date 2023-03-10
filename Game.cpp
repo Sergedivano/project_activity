@@ -1,6 +1,6 @@
 #include "Game.h"
-#include <time.h>
-#include <SFML/Audio.hpp>
+
+using namespace sf;
 
 Game::Game()
 {
@@ -53,26 +53,26 @@ void Game::Move(Direction direction)
 	solved = Check();
 }
 
-void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Game::draw(RenderTarget& target, RenderStates states) const
 {
 	states.transform *= getTransform();
-	sf::Color color = sf::Color(200, 100, 200);
+	Color color = Color(200, 100, 200);
 
 	// Рисуем рамку игрового поля
-	sf::RectangleShape shape(sf::Vector2f(FIELD_SIZE, FIELD_SIZE));
+	RectangleShape shape(Vector2f(FIELD_SIZE, FIELD_SIZE));
 	shape.setOutlineThickness(2.f);
 	shape.setOutlineColor(color);
-	shape.setFillColor(sf::Color::Transparent);
+	shape.setFillColor(Color::Transparent);
 	target.draw(shape, states);
 
 	// Подготавливаем рамку для отрисовки всех плашек
-	shape.setSize(sf::Vector2f(CELL_SIZE - 2, CELL_SIZE - 2));
+	shape.setSize(Vector2f(CELL_SIZE - 2, CELL_SIZE - 2));
 	shape.setOutlineThickness(2.f);
 	shape.setOutlineColor(color);
-	shape.setFillColor(sf::Color::Transparent);
+	shape.setFillColor(Color::Transparent);
 
 	// Подготавливаем текстовую заготовку для отрисовки номеров плашек
-	sf::Text text("", font, 52);
+	Text text("", font, 52);
 
 	for (unsigned int i = 0; i < ARRAY_SIZE; i++)
 	{
@@ -82,20 +82,20 @@ void Game::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		if (solved)
 		{
 			// Решенную головоломку выделяем другим цветом
-			shape.setOutlineColor(sf::Color::Cyan);
-			text.setFillColor(sf::Color::Cyan);
+			shape.setOutlineColor(Color::Cyan);
+			text.setFillColor(Color::Cyan);
 		}
 		else if (elements[i] == i + 1)
 		{
 			// Номера плашек на своих местах выделяем цветом
-			text.setFillColor(sf::Color::Green);
+			text.setFillColor(Color::Green);
 		}
 
 		// Рисуем все плашки, кроме пустой
 		if (elements[i] > 0)
 		{
 			// Вычисление позиции плашки для отрисовки
-			sf::Vector2f position(i % SIZE * CELL_SIZE + 10.f, i / SIZE * CELL_SIZE + 10.f);
+			Vector2f position(i % SIZE * CELL_SIZE + 10.f, i / SIZE * CELL_SIZE + 10.f);
 			shape.setPosition(position);
 			
 			// Позиция текста
