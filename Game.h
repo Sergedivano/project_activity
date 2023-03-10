@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <time.h>
+#include <SFML/Audio.hpp>
 
 const int SIZE = 4;						// Размер игрового поля в плашках
 const int ARRAY_SIZE = SIZE * SIZE;		// Размер массива

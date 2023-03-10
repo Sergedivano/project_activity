@@ -1,4 +1,6 @@
 #include "Game.h"
+#include <time.h>
+#include <SFML/Audio.hpp>
 
 Game::Game()
 {
